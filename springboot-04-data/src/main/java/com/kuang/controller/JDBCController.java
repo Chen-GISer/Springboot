@@ -1,0 +1,55 @@
+package com.kuang.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 创作者: 陈文震
+ * 创作日期: 2020年07月14日  周二  14:22
+ */
+@RestController
+public class JDBCController {
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    // 查询数据库的所有信息
+    @GetMapping("/userList")
+    public List<Map<String,Object>> userList(){
+        String sql = "select * from mybatis.user";
+        List<Map<String, Object>> list_maps = jdbcTemplate.queryForList(sql);
+        return list_maps;
+    }
+
+    @GetMapping("/addUser")
+    public String addUser(){
+        String sql = "insert into mybatis.user(id,name,pwd) value (4,'小明','123456')";
+        jdbcTemplate.update(sql);
+        return "update-ok";
+    }
+
+    @GetMapping("/updateUser/{id}")
+    public String updateUser(@PathVariable("id") int id){
+        String sql = "update mybatis.user set name=?,pwd=? where id="+id;
+        // 封装
+        Object[] objects = new Object[2];
+        objects[0] = "小明2";
+        objects[1] = "牛逼Plus";
+        jdbcTemplate.update(sql,objects);
+        return "updateUser-ok";
+    }
+
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id") int id){
+        String sql = "delete from mybatis.user where id =?";
+        jdbcTemplate.update(sql,id);
+        return "deleteUser-ok";
+    }
+
+}
