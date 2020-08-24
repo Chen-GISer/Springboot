@@ -1,0 +1,14 @@
+# k=v
+person:
+  name: 陈文震${random.int}
+  age: ${random.int}
+  happy: false
+  birth: 2020/7/9
+  maps: {k21: v1,k: v2}
+  list:
+    - code
+    - music
+    - girl
+dog:
+  first-name: ${person.hello:hello}_旺财
+  age: 3
